@@ -11,6 +11,10 @@ class state {
 		state(vector<int> &_south, vector<int> &_north, bool _boatSouth);
 		int heuristic(void);
 		bool isGoalState(void);
+		int compare(state &compareTo);
+		const vector<int> &getSouthSide(void);
+		const vector<int> &getNorthSide(void);
+		bool isBoatSouth(void);
 	private:
 		vector<int> south;
 		vector<int> north;
@@ -55,6 +59,30 @@ bool state::isGoalState(void) {
 	else {
 		return false;
 	}
+}
+
+/* Function name: getSouthSide
+ * Function purpose: determines if this state is the goal state
+ * Returns: bool: true if goal state, false otherwise
+ */
+const vector<int> &state::getSouthSide(void) {
+	return south;
+}
+
+/* Function name: getNorthSide
+ * Function purpose: get vector of weights 
+ * Returns: bool: true if goal state, false otherwise
+ */
+const vector<int> &state::getNorthSide(void) {
+	return north;
+}
+
+/* Function name: isBoatSouth
+ * Function purpose: determines if the boat is on the south shore in this state
+ * Returns: bool: true if boat is on south shore, false otherwise
+ */
+bool state::isBoatSouth(void) {
+	return boatSouth;
 }
 
 //Get minimum value in a vector
