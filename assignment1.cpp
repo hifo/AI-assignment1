@@ -9,13 +9,25 @@ using namespace std;
 
 class node{
 public:
-    int cost;
-    //state
+    node(node &parent);
+    node();
+    ~node();
 private:
     node parent;
     node* children;
+    int cost;
+    //state
+    //action
+}
+
+node(){
+    
+}
+
+node(node &parent){
+    
 }
 
 int main(){
-    
+    node root = new node();
 }
