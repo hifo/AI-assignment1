@@ -25,10 +25,22 @@ private:
     void addChild(node* child);
 }
 
+/* Function name: node
+ * Function purpose: constructor for node class, used for the root which has no parent
+ * Parameters: 
+ *      none
+ */
 node::node(){
     this->parent = NULL;
+    this->cost = 0;
 }
 
+
+/* Function name: node
+ * Function purpose: constructor for node class
+ * Parameters: 
+ *      node &parent: the node which is the parent node for the node being constructed
+ */
 node::node(node &parent){
     this->parent = &parent;
 }
