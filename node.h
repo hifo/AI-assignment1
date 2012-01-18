@@ -17,9 +17,10 @@ public:
     node();
     ~node();
 private:
-    node parent;
+    node *parent;
     node[] children;
     int cost;
+    int depth;
     //state
     //action
     void addChild(node* child);
@@ -33,6 +34,7 @@ private:
 node::node(){
     this->parent = NULL;
     this->cost = 0;
+    this->depth = 0;
 }
 
 
@@ -43,6 +45,7 @@ node::node(){
  */
 node::node(node &parent){
     this->parent = &parent;
+    this->depth = this->parent-depth+1;
 }
 
 
@@ -50,7 +53,7 @@ node::node(node &parent){
  * Function purpose: adds a child to a given node
  * Returns: void
  */
-void addChild(node &child){
+void node::addChild(node &child){
     for (int i=0; i < this->children.length; i++) {
         if(this->children[i] == NULL){
             this->children[i] = &child;
