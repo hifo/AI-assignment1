@@ -1,3 +1,5 @@
+#pragma once
+#include <vector>
 //
 //  node.h
 //
@@ -18,7 +20,7 @@ public:
     ~node();
 private:
     node *parent;
-    node[] children;
+    vector<node> &children;
     int cost;
     int depth;
     //state
@@ -54,11 +56,7 @@ node::node(node &parent){
  * Returns: void
  */
 void node::addChild(node &child){
-    for (int i=0; i < this->children.length; i++) {
-        if(this->children[i] == NULL){
-            this->children[i] = &child;
-        }
-    }
+    this.push_back(&child);
 }
 
 
