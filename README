@@ -2,12 +2,16 @@
 
 Format: List of weights of people on each side and location of boat
 Initial state: All people on southern bank, boat on southern bank
-Possible actions: north(person), north(person1, person2), south(person), south(person1, person2)
-Transition model: 
+Possible actions: north(person1, person2), south(person)
+Transition model: Everyone's current location after boat (with passengers) is moved
 Goal state: All people on northern bank
 Cost function: maximum of weights of people in boat
 
 
 2)	If there are 4 men with weights 10, 20, 150, 200, how many possible states are reachable? What is the optimal time for this instance?
+
+Assuming possible actions are sending 2 people north when boat is on south shore and sending 1 person south when boat is on north shore:
+271 possible states
+Optimal time: 390
 
 3)	Describe your heuristic for A* search.  Justify the heuristic’s admissibility.
