@@ -5,6 +5,8 @@
 //
 
 #include <iostream>
+#include "state.h"
+#include "node.h"
 using namespace std;
 
 int main(){

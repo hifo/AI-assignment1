@@ -22,7 +22,7 @@ private:
     int cost;
     //state
     //action
-    addChild(node* child);
+    void addChild(node* child);
 }
 
 node::node(){
@@ -33,7 +33,12 @@ node::node(node &parent){
     this->parent = &parent;
 }
 
-addChild(node &child){
+
+/* Function name: addChild
+ * Function purpose: adds a child to a given node
+ * Returns: void
+ */
+void addChild(node &child){
     for (int i=0; i < this->children.length; i++) {
         if(this->children[i] == NULL){
             this->children[i] = &child;
