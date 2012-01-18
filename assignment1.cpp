@@ -14,18 +14,27 @@ public:
     ~node();
 private:
     node parent;
-    node* children;
+    node[] children;
     int cost;
     //state
     //action
+    addChild(node* child);
 }
 
-node(){
-    
+node::node(){
+    this->parent = NULL;
 }
 
-node(node &parent){
-    
+node::node(node &parent){
+    this->parent = &parent;
+}
+
+node::addChild(node &child){
+    for (int i=0; i < this->children.length; i++) {
+        if(this->children[i] == NULL){
+            this->children[i] = &child;
+        }
+    }
 }
 
 int main(){
