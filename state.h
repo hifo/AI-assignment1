@@ -4,6 +4,8 @@
 //Created by Eric Finn and Hillary Fotino on 2012-01-18
 //State class to record state of system
 
+int getMinVal(vector<int> &listOfVals);
+
 class state {
 	public:
 		state(vector<int> &_south, vector<int> &_north, bool _boatSouth);
@@ -32,5 +34,23 @@ state::state(vector<int> &_south, vector<int> &_north, bool _boatSouth) {
  * Returns: int: estimated cost of reaching goal
  */
 int state::heuristic(void) {
-	return 0;
+	//heuristic is minimum weight of individuals on the side with the boat
+	if(boatSouth) {
+		return getMinVal(south);
+	}
+	else {
+		return getMinVal(north);
+	}
+}
+
+//Get minimum value in a vector
+int getMinVal(vector<int> &listOfVals) {
+	vector<int>::iterator currEl;
+	int min = -1;
+	for(currEl=listOfVals.begin() ; currEl < listOfVals.end(); currEl++) {
+		if(*currEl < min) {
+			min = *currEl;
+		}
+	}
+	return min;
 }
