@@ -10,6 +10,7 @@ class state {
 	public:
 		state(vector<int> &_south, vector<int> &_north, bool _boatSouth);
 		int heuristic(void);
+		bool isGoalState(void);
 	private:
 		vector<int> south;
 		vector<int> north;
@@ -19,9 +20,9 @@ class state {
 /* Function name: state
  * Function purpose: constructor for state class
  * Parameters:
- *		in _south: vector containing weights of people on south shore
- *		in _north: vector containing weights of people on north shore
- *		in _boatSouth: true if boat is on south shore, false otherwise
+ *		input _south: vector containing weights of people on south shore
+ *		input _north: vector containing weights of people on north shore
+ *		input _boatSouth: true if boat is on south shore, false otherwise
  */
 state::state(vector<int> &_south, vector<int> &_north, bool _boatSouth) {
 	south = _south;
@@ -40,6 +41,19 @@ int state::heuristic(void) {
 	}
 	else {
 		return getMinVal(north);
+	}
+}
+
+/* Function name: isGoalState
+ * Function purpose: determines if this state is the goal state
+ * Returns: bool: true if goal state, false otherwise
+ */
+bool state::isGoalState(void) {
+	if(south.size() == 0) {
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
