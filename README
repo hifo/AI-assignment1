@@ -14,6 +14,6 @@ Assuming possible actions are sending 2 people north when boat is on south shore
 271 possible states
 Optimal time: 390
 
-3)	Describe your heuristic for A* search.  Justify the heuristic’s admissibility.
+3)	Describe your heuristic for A* search.  Justify the heuristic's admissibility.
 
 Heuristic is the minimum individual weight on the side that the boat is on. It is impossible to perform a single lower-cost transition than the heuristic, because the cost is the maximum of the weights of people on the boat, which will always be at least the weight of the lowest-weight person on the side with the boat.
