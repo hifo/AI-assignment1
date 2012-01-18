@@ -1,0 +1,13 @@
+1)	Provide a problem definition for the above problem. Be sure to include the format of the states, the initial state, possible actions, a transition model, the goal state, and the cost function.
+
+Format: List of weights of people on each side and location of boat
+Initial state: All people on southern bank, boat on southern bank
+Possible actions: north(person), north(person1, person2), south(person), south(person1, person2)
+Transition model: 
+Goal state: All people on northern bank
+Cost function: maximum of weights of people in boat
+
+
+2)	If there are 4 men with weights 10, 20, 150, 200, how many possible states are reachable? What is the optimal time for this instance?
+
+3)	Describe your heuristic for A* search.  Justify the heuristic’s admissibility.
