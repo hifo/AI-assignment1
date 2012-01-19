@@ -51,12 +51,39 @@ void aStarSearch(){
 }
 
 /* Function name: parse_input
- * Function purpose:
+ * Function purpose: Given a filename and state object, parses file to set initial state
  * Parameters:
  *  file: String: The name of the file that needs to be parsed
+ *	initState: state&: Reference to state object to set to initial state from file
  * Return:
- *  void
+ *  bool: true on success, false on failure
  */
-void parse_input(String file){
-    
+bool parse_input(String file, state &initState){
+    ifstream input;
+	int curElement;
+	int numElements;
+	vector<int> initSouth;
+	vector<int> initNorth;
+	bool result = true;
+	
+	input.open(file.c_str(), ifstream::in);
+	
+	//get element count (1st number in file)
+	input>>numElements;
+	
+	//get list of elements
+	while(input.good()) {
+		input>>curElement;
+		initSouth.push_back(curElement);
+	}
+	
+	//check that we read all elements and didn't read too many
+	if(initSouth.size() != numElements) {
+		result = false;
+		cerr<<"Parsing error: Mismatch between given element count and actual element count"<<endl;
+	}
+	
+	initState = state(initSouth, initNorth, true);
+	input.close();
+	return result;
 }
