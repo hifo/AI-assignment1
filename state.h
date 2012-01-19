@@ -20,6 +20,7 @@ class state {
 		const vector<int> &getSouthSide(void);
 		const vector<int> &getNorthSide(void);
 		bool isBoatSouth(void);
+		vector<state*> &getPossibleNextStates(void);
 	private:
 		vector<int> south;
 		vector<int> north;
@@ -100,6 +101,58 @@ const vector<int> &state::getNorthSide(void) {
  */
 bool state::isBoatSouth(void) {
 	return boatSouth;
+}
+
+/* Function name: getPossibleNextStates
+ * Function purpose: generates all states that can be transitioned to
+ * Returns: vector of state*: vector of pointers to states that can be transitioned to from this state
+ * Notes: Both the vector and the states are allocated by this function (using new) and should be deleted by the calling function
+ */
+vector<state*> &state::getPossibleNextStates(void) {
+	vector<int>::iterator firstPerson;
+	vector<int>::iterator secondPerson;
+	vector<state*> nextStates;
+	//boat is on south shore, use firstPerson and secondPerson
+	if(boatSouth) {
+		//handle special case of one person on south shore
+		if(south.size() == 1) {
+			
+		}
+		//create a new state for each unique combination of two people on south shore
+		for(firstPerson = south.begin(); firstPerson < south.end(); firstPerson++) {
+			for(secondPerson = firstPerson+1; secondPerson < south.end(); secondPerson++) {
+				vector<int> newSouth;
+				vector<int> newNorth = north;
+				for(vector<int>::iterator tSouth = south.begin(); tSouth < south.end(); tSouth++) {
+					if(tSouth != firstPerson && tSouth != secondPerson) {
+						newSouth.push_back(*tSouth);
+					}
+					else {
+						newNorth.push_back(*tSouth);
+					}
+				}
+			}
+		}
+	}
+	//boat is on north shore, use firstPerson
+	else {
+		//create a new state for each person on north shore
+		for(firstPerson = north.begin(); firstPerson < north.end(); firstPerson++) {
+			vector<int> newSouth = south;
+			vector<int> newNorth;
+			//add all but firstPerson to newNorth, add firstPerson to newSouth
+			for(vector<int>::iterator tNorth = north.begin(); tNorth < north.end(); tNorth++) {
+				if(tNorth != firstPerson) {
+					newNorth.push_back(*tNorth);
+				}
+				else {
+					newSouth.push_back(*tNorth);
+				}
+			}
+			state *nState = new state(newSouth, newNorth, southShore);
+			nextStates.push_back(nState);
+		}
+	}
 }
 
 //Get minimum value in a vector
