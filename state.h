@@ -20,12 +20,13 @@ class state {
 		const vector<int> &getSouthSide(void);
 		const vector<int> &getNorthSide(void);
 		bool isBoatSouth(void);
-		vector<state*> &getPossibleNextStates(void);
+		void getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs);
+		state &operator=(const state &right);
 	private:
 		vector<int> south;
 		vector<int> north;
 		bool boatSouth;
-}
+};
 
 /* Function name: state
  * Function purpose: constructor for state class
@@ -106,12 +107,13 @@ bool state::isBoatSouth(void) {
 /* Function name: getPossibleNextStates
  * Function purpose: generates all states that can be transitioned to
  * Returns: vector of state*: vector of pointers to states that can be transitioned to from this state
- * Notes: Both the vector and the states are allocated by this function (using new) and should be deleted by the calling function
+ * Notes: The vector, the transition structs, and the states are allocated by this function (using new) and should be deleted by the calling function
  */
-vector<state*> &state::getPossibleNextStates(void) {
+int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs) {
 	vector<int>::iterator firstPerson;
 	vector<int>::iterator secondPerson;
-	vector<state*> *nextStates = new vector<state*>;
+	int transCost;
+	int stateCount = 0;
 	//boat is on south shore, use firstPerson and secondPerson
 	if(boatSouth) {
 		//handle special case of one person on south shore
@@ -120,7 +122,10 @@ vector<state*> &state::getPossibleNextStates(void) {
 			vector<int> newNorth = north;
 			newNorth.push_back(*(south.begin()));
 			state *nState = new state(newSouth, newNorth, southShore);
-			nextStates->push_back(nState);
+			transCost = *(south.begin());
+			nextStates.push_back(nState);
+			costs.push_back(transCost);
+			stateCount = 1;
 		}
 		else {
 			//create a new state for each unique combination of two people on south shore
@@ -137,7 +142,15 @@ vector<state*> &state::getPossibleNextStates(void) {
 						}
 					}
 					state *nState = new state(newSouth, newNorth, southShore);
-					nextStates->push_back(nState);
+					if(*secondPerson > *firstPerson) {
+						transCost = *secondPerson;
+					}
+					else {
+						transCost = *firstPerson;
+					}
+					nextStates.push_back(nState);
+					costs.push_back(transCost);
+					stateCount++;
 				}
 			}
 		}
@@ -158,10 +171,18 @@ vector<state*> &state::getPossibleNextStates(void) {
 				}
 			}
 			state *nState = new state(newSouth, newNorth, southShore);
-			nextStates->push_back(nState);
+			if(*secondPerson > *firstPerson) {
+				transCost = *secondPerson;
+			}
+			else {
+				transCost = *firstPerson;
+			}
+			nextStates.push_back(nState);
+			costs.push_back(transCost);
+			stateCount++;
 		}
 	}
-	return *nextStates;
+	return;
 }
 
 //Get minimum value in a vector
@@ -174,4 +195,10 @@ int getMinVal(vector<int> &listOfVals) {
 		}
 	}
 	return min;
+}
+
+state &operator=(const state &right) {
+	south = right.getSouthShore();
+	north = right.getNorthShore();
+	boutSouth = right.isBoatSouth();
 }
