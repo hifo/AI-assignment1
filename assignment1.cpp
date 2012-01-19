@@ -5,19 +5,23 @@
 //
 
 #include <iostream>
-#include <ifstream>
-#include <string.h>
+#include <fstream>
+#include <string>
 #include "state.h"
 #include "node.h"
 using namespace std;
 
+void breadthFirstSearch();
+void depthFirstSearch();
+void aStarSearch();
+bool parse_input(string file, state &initState);
+
 int main(){
-    int num_people;
-    int[num_people] people;
-    String file = "input1.txt";   //change this variable to change input file
-    parse_input(file);
+    string file = "input1.txt";   //change this variable to change input file
+	state initState;
+    parse_input(file, initState);
     
-    node root = new node();
+    node root(initState);
 }
 
 
@@ -58,10 +62,10 @@ void aStarSearch(){
  * Return:
  *  bool: true on success, false on failure
  */
-bool parse_input(String file, state &initState){
+bool parse_input(string file, state &initState){
     ifstream input;
 	int curElement;
-	int numElements;
+	unsigned int numElements;
 	vector<int> initSouth;
 	vector<int> initNorth;
 	bool result = true;

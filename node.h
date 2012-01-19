@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "state.h"
 //
 //  node.h
 //
@@ -13,18 +14,18 @@
 class node{
 public:
     node(state &_currState); //constructor for root node
-    node(node *_parent, state &_currState, int _cost); //constructor for child nodes
+    node(node &_parent, state &_currState, int _cost); //constructor for child nodes
     ~node();
 	void expand();
 	int getDepth();
 private:
     void addChild(node &child);
-	void addNextState(state &nextState);
+	void addNextState(state &nextState, int cost);
     node *parent;
     vector<node*> children;
     int cost;
     int depth;
-    state currState;
+    state *currState;
 };
 
 /* Function name: node
@@ -36,7 +37,7 @@ node::node(state &_currState){
     this->parent = NULL;
     this->cost = 0;
     this->depth = 0;
-	this->currState = _currState;
+	this->currState = &_currState;
 }
 
 
@@ -51,7 +52,7 @@ node::node(node &_parent, state &_currState, int _cost){
     this->parent = &_parent;
 	this->cost = _cost;
     this->depth = this->parent->getDepth()+1;
-	this->currState = _currState;
+	this->currState = &_currState;
 }
 
 /* Function name: ~node
@@ -63,6 +64,28 @@ node::~node() {
 	}
 }
 
+/* Function name: expand
+ * Function purpose: create and add children states to this node
+ * Returns: void
+ */
+void node::expand() {
+	vector<state*> nextStates;
+	vector<int> costs;
+	int stateCount = 0;
+	stateCount = currState->getPossibleNextStates(nextStates, costs);
+	//iterate through nextStates, adding a node and its corresponding cost for each state
+	for(int index = 0; index < stateCount; index++) {
+		addNextState(*nextStates[index], costs[index]);
+	}
+}
+/* Function name: getDepth
+ * Function purpose: Get the depth in the tree of this node
+ * Returns: int: the depth of this node
+ */
+int node::getDepth() {
+	return depth;
+}
+
 /* Function name: addChild
  * Function purpose: adds a child to a given node
  * Parameters:
@@ -71,21 +94,6 @@ node::~node() {
  */
 void node::addChild(node &child){
     this->children.push_back(&child);
-}
-
-/* Function name: expand
- * Function purpose: create and add children states to this node
- * Returns: void
- */
-void node::expand() {
-	vector<state*> nextStates;
-	vector<int> costs;
-	int nextStates = 0;
-	nextStates = currState->getPossibleNextStates(nextStates, costs);
-	//iterate through nextStates, adding a node and its corresponding cost for each state
-	for(int index = 0; index < nextStates; index++) {
-		addNextState(nextStates[index], costs[index]);
-	}
 }
 
 /* Function name: addNextState

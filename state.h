@@ -14,14 +14,14 @@ int getMinVal(vector<int> &listOfVals);
 class state {
 	public:
 		state(vector<int> &_south, vector<int> &_north, bool _boatSouth);
+		state();
 		int heuristic(void);
 		bool isGoalState(void);
 		bool compare(state &compareTo);
 		const vector<int> &getSouthSide(void);
 		const vector<int> &getNorthSide(void);
 		bool isBoatSouth(void);
-		void getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs);
-		state &operator=(const state &right);
+		int getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs);
 	private:
 		vector<int> south;
 		vector<int> north;
@@ -41,6 +41,13 @@ state::state(vector<int> &_south, vector<int> &_north, bool _boatSouth) {
 	boatSouth = _boatSouth;
 	sort(south.begin(), south.end());
 	sort(north.begin(), north.end());
+}
+
+/* Function name: state
+ * Function purpose: constructor for state class
+ * Parameters:
+ */
+state::state() {
 }
 
 /* Function name: heuristic
@@ -121,7 +128,7 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
 			vector<int> newSouth;
 			vector<int> newNorth = north;
 			newNorth.push_back(*(south.begin()));
-			state *nState = new state(newSouth, newNorth, southShore);
+			state *nState = new state(newSouth, newNorth, !boatSouth);
 			transCost = *(south.begin());
 			nextStates.push_back(nState);
 			costs.push_back(transCost);
@@ -141,7 +148,7 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
 							newNorth.push_back(*tSouth);
 						}
 					}
-					state *nState = new state(newSouth, newNorth, southShore);
+					state *nState = new state(newSouth, newNorth, !boatSouth);
 					if(*secondPerson > *firstPerson) {
 						transCost = *secondPerson;
 					}
@@ -170,7 +177,7 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
 					newSouth.push_back(*tNorth);
 				}
 			}
-			state *nState = new state(newSouth, newNorth, southShore);
+			state *nState = new state(newSouth, newNorth, !boatSouth);
 			if(*secondPerson > *firstPerson) {
 				transCost = *secondPerson;
 			}
@@ -182,7 +189,7 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
 			stateCount++;
 		}
 	}
-	return;
+	return stateCount;
 }
 
 //Get minimum value in a vector
@@ -195,10 +202,4 @@ int getMinVal(vector<int> &listOfVals) {
 		}
 	}
 	return min;
-}
-
-state &operator=(const state &right) {
-	south = right.getSouthShore();
-	north = right.getNorthShore();
-	boutSouth = right.isBoatSouth();
 }
