@@ -25,7 +25,7 @@ private:
     int depth;
     //state
     //action
-    void addChild(node* child);
+    void addChild(vector<node> child);
 }
 
 /* Function name: node
