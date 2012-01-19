@@ -1,5 +1,10 @@
 #pragma once
+
 #include <vector>
+#include <algorithm>
+using namespace std;
+
+
 //state.h
 //Created by Eric Finn and Hillary Fotino on 2012-01-18
 //State class to record state of system
@@ -11,7 +16,7 @@ class state {
 		state(vector<int> &_south, vector<int> &_north, bool _boatSouth);
 		int heuristic(void);
 		bool isGoalState(void);
-		int compare(state &compareTo);
+		bool compare(state &compareTo);
 		const vector<int> &getSouthSide(void);
 		const vector<int> &getNorthSide(void);
 		bool isBoatSouth(void);
@@ -32,6 +37,8 @@ state::state(vector<int> &_south, vector<int> &_north, bool _boatSouth) {
 	south = _south;
 	north = _north;
 	boatSouth = _boatSouth;
+	sort(south.begin(), south.end());
+	sort(north.begin(), north.end());
 }
 
 /* Function name: heuristic
@@ -59,6 +66,16 @@ bool state::isGoalState(void) {
 	else {
 		return false;
 	}
+}
+
+/* Function name: compare
+ * Function purpose: Compare this state to another one
+ * Returns: bool: true if states are the same, false otherwise
+ */
+bool state::compare(state &compareTo) {
+	return  equal(south.begin(), south.end(), compareTo.getSouthSide().begin()) &&
+	        equal(north.begin(), north.end(), compareTo.getNorthSide().begin()) &&
+	        boatSouth == compareTo.isBoatSouth();
 }
 
 /* Function name: getSouthSide
