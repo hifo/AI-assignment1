@@ -111,25 +111,33 @@ bool state::isBoatSouth(void) {
 vector<state*> &state::getPossibleNextStates(void) {
 	vector<int>::iterator firstPerson;
 	vector<int>::iterator secondPerson;
-	vector<state*> nextStates;
+	vector<state*> *nextStates = new vector<state*>;
 	//boat is on south shore, use firstPerson and secondPerson
 	if(boatSouth) {
 		//handle special case of one person on south shore
 		if(south.size() == 1) {
-			
+			vector<int> newSouth;
+			vector<int> newNorth = north;
+			newNorth.push_back(*(south.begin()));
+			state *nState = new state(newSouth, newNorth, southShore);
+			nextStates->push_back(nState);
 		}
-		//create a new state for each unique combination of two people on south shore
-		for(firstPerson = south.begin(); firstPerson < south.end(); firstPerson++) {
-			for(secondPerson = firstPerson+1; secondPerson < south.end(); secondPerson++) {
-				vector<int> newSouth;
-				vector<int> newNorth = north;
-				for(vector<int>::iterator tSouth = south.begin(); tSouth < south.end(); tSouth++) {
-					if(tSouth != firstPerson && tSouth != secondPerson) {
-						newSouth.push_back(*tSouth);
+		else {
+			//create a new state for each unique combination of two people on south shore
+			for(firstPerson = south.begin(); firstPerson < south.end(); firstPerson++) {
+				for(secondPerson = firstPerson+1; secondPerson < south.end(); secondPerson++) {
+					vector<int> newSouth;
+					vector<int> newNorth = north;
+					for(vector<int>::iterator tSouth = south.begin(); tSouth < south.end(); tSouth++) {
+						if(tSouth != firstPerson && tSouth != secondPerson) {
+							newSouth.push_back(*tSouth);
+						}
+						else {
+							newNorth.push_back(*tSouth);
+						}
 					}
-					else {
-						newNorth.push_back(*tSouth);
-					}
+					state *nState = new state(newSouth, newNorth, southShore);
+					nextStates->push_back(nState);
 				}
 			}
 		}
@@ -150,9 +158,10 @@ vector<state*> &state::getPossibleNextStates(void) {
 				}
 			}
 			state *nState = new state(newSouth, newNorth, southShore);
-			nextStates.push_back(nState);
+			nextStates->push_back(nState);
 		}
 	}
+	return *nextStates;
 }
 
 //Get minimum value in a vector
