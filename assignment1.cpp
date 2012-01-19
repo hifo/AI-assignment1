@@ -5,11 +5,18 @@
 //
 
 #include <iostream>
+#include <ifstream>
+#include <string.h>
 #include "state.h"
 #include "node.h"
 using namespace std;
 
 int main(){
+    int num_people;
+    int[num_people] people;
+    String file = "input1.txt";   //change this variable to change input file
+    parse_input(file);
+    
     node root = new node();
 }
 
@@ -41,4 +48,15 @@ void depthFirstSearch(){
  */
 void aStarSearch(){
     cout << "A* search" << endl;
+}
+
+/* Function name: parse_input
+ * Function purpose:
+ * Parameters:
+ *  file: String: The name of the file that needs to be parsed
+ * Return:
+ *  void
+ */
+void parse_input(String file){
+    
 }

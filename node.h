@@ -23,8 +23,7 @@ private:
     vector<node> &children;
     int cost;
     int depth;
-    //state
-    //action
+    state currState;
     void addChild(vector<node> child);
 }
 
