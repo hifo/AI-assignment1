@@ -123,6 +123,11 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
 	vector<int>::iterator secondPerson;
 	int transCost;
 	int stateCount = 0;
+	
+	if(this->isGoalState()) {
+		return 0;
+	}
+	
 	//boat is on south shore, use firstPerson and secondPerson
 	if(boatSouth) {
 		//handle special case of one person on south shore

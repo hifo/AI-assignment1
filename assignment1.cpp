@@ -4,6 +4,9 @@
 //  Created by Hillary Fotino and Eric Finn on 1/18/12.
 //
 
+
+#define DEBUG 1
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -38,6 +41,10 @@ int main(){
 	genericSearch<BFS>(&rootBFS);
 	genericSearch<DFS>(&rootDFS);
 	genericSearch<ASTAR>(&rootASt);
+#if DEBUG
+	cerr<<"End of main"<<endl;
+#endif
+	return 0;
 }
 
 
@@ -51,6 +58,9 @@ template<t_algorithm algo>
 class compNodes {
 	public:
 		bool operator()(node *left, node *right) {
+			if(left == NULL || right == NULL) {
+				return false;
+			}
 			switch(algo) {
 				case BFS:
 					return (left->getDepth() > right->getDepth());
@@ -82,18 +92,27 @@ void genericSearch(node *root) {
 	int totalCost = 0;
 	int expandCount = 0;
 	
+	if(root == NULL) {
+		return;
+	}
+	
     switch(algo) {
 		case BFS:
 			cout<<"Breadth First Search";
+			break;
 		case DFS:
 			cout<<"Depth First Search";
+			break;
 		case ASTAR:
 			cout<<"A* Search";
+			break;
 		default:
 			cout<<"Unknown Search Algorithm";
+			break;
 	}
-	q.push(root);
 	
+	q.push(root);
+
 	while(q.size() > 0) {
 		//get first node
 		currNode = q.top();
