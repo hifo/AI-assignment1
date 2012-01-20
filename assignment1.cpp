@@ -25,12 +25,17 @@ void aStarSearch(node *root);
 bool parse_input(string file, state &initState);
 void printPath(stack<node*> &path);
 
-int main(){
-  string file;
+int main(int argc, char* argv[]){
+	string file;
 	state initState;
 	bool status;
-	cout << "Enter the name of the input file" << endl;
-	cin >> file;
+	if(argc > 1) {
+		file = argv[1];
+	}
+	else {
+		cout << "Enter the name of the input file" << endl;
+		cin >> file;
+	}
 #if DEBUG
 	cerr<<"main"<<endl;
 #endif
@@ -189,6 +194,11 @@ bool parse_input(string file, state &initState){
 	bool result = true;
 	
 	input.open(file.c_str(), ifstream::in);
+	
+	if(!input.is_open()) {
+		cerr<<"Unable to open file: "<<file<<endl;
+		return false;
+	}
 	
 	//get element count (1st number in file)
 	input>>numElements;
