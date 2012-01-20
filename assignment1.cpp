@@ -26,9 +26,11 @@ bool parse_input(string file, state &initState);
 void printPath(stack<node*> &path);
 
 int main(){
-    string file = "input2.txt";   //change this variable to change input file
+  string file;
 	state initState;
 	bool status;
+	cout << "Enter the name of the input file" << endl;
+	cin >> file;
 #if DEBUG
 	cerr<<"main"<<endl;
 #endif

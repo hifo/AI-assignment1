@@ -26,9 +26,10 @@ bool parse_input(string file, state &initState);
 void printPath(stack<node*> &path);
 
 int main(){
-    string file = "input1.txt";   //change this variable to change input file
+  string file;
 	state initState;
 	bool status;
+	cin >> file;
 #if DEBUG
 	cerr<<"main"<<endl;
 #endif
@@ -75,7 +76,8 @@ class compNodes {
 				case DFS:
 					return (left->getDepth() < right->getDepth());
 				case ASTAR:
-					return (left->getHeuristic() > right->getHeuristic());
+					return ((left->getHeuristic() + left->getCost()) <
+							(right->getHeuristic() + right->getCost()));
 				default:
 					return false;
 			}
@@ -99,6 +101,7 @@ void genericSearch(node *root) {
 	stack<node*> path;
 	int totalCost = 0;
 	int expandCount = 0;
+	bool goalFound = false;
 	
 #if DEBUG
 	cerr<<"genericSearch"<<endl;
@@ -131,7 +134,7 @@ void genericSearch(node *root) {
 #if DEBUG
 	cerr<<"genericSearch: entering loop"<<endl;
 #endif
-	while(q.size() > 0) {
+	while((q.size() > 0) && !goalFound) {
 #if DEBUG
 		cerr<<"genericSearch: popping"<<endl;
 #endif
@@ -154,6 +157,7 @@ void genericSearch(node *root) {
 			//check for end condition in node's children
 			if((*it)->isGoalNode()) {
 				goalNode = *it;
+				goalFound = true;
 				break;
 			}
 		}
