@@ -4,9 +4,6 @@
 //  Created by Hillary Fotino and Eric Finn on 1/18/12.
 //
 
-
-#define DEBUG 0
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -36,29 +33,17 @@ int main(int argc, char* argv[]){
 		cout << "Enter the name of the input file" << endl;
 		cin >> file;
 	}
-#if DEBUG
-	cerr<<"main"<<endl;
-#endif
     status = parse_input(file, initState);
 	if(status == false) {
 		return 1;
 	}
     
-#if DEBUG
-	cerr<<"main: input file successfully parsed"<<endl;
-#endif
     node rootBFS(initState);
 	node rootDFS(initState);
 	node rootASt(initState);
-#if DEBUG
-	cerr<<"main: root nodes created"<<endl;
-#endif
 	genericSearch<BFS>(&rootBFS);
 	genericSearch<DFS>(&rootDFS);
 	genericSearch<ASTAR>(&rootASt);
-#if DEBUG
-	cerr<<"End of main"<<endl;
-#endif
 	return 0;
 }
 
@@ -109,10 +94,6 @@ void genericSearch(node *root) {
 	int expandCount = 0;
 	bool goalFound = false;
 	
-#if DEBUG
-	cerr<<"genericSearch"<<endl;
-#endif
-	
 	if(root == NULL) {
 		return;
 	}
@@ -132,30 +113,15 @@ void genericSearch(node *root) {
 			break;
 	}
 	
-#if DEBUG
-	cerr<<endl<<"genericSearch: pushing root"<<endl;
-#endif
 	q.push(root);
 
-#if DEBUG
-	cerr<<"genericSearch: entering loop"<<endl;
-#endif
 	while((q.size() > 0) && !goalFound) {
-#if DEBUG
-		cerr<<"genericSearch: popping"<<endl;
-#endif
 		//get first node
 		currNode = q.top();
 		q.pop();
-#if DEBUG
-		cerr<<"genericSearch: expanding"<<endl;
-#endif
 		//expand node
 		currNode->expand();
 		expandCount++;
-#if DEBUG
-		cerr<<"genericSearch: adding children to queue"<<endl;
-#endif
 		//add node's children to queue
 		currNodeChildren = currNode->getChildren();
 		for(vector<node*>::iterator it = currNodeChildren.begin(); it < currNodeChildren.end(); it++) {
@@ -168,9 +134,6 @@ void genericSearch(node *root) {
 			}
 		}
 	}
-#if DEBUG
-	cerr<<"genericSearch: loop finished"<<endl;
-#endif
 	totalCost = goalNode->tracePathToHere(path);
 	cout<<" "<<totalCost<<" "<<expandCount<<endl;
 	printPath(path);

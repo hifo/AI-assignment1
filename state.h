@@ -122,24 +122,14 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
 	int transCost;
 	int stateCount = 0;
 	
-#if DEBUG
-	cerr<<"state::getPossibleNextStates"<<endl;
-#endif
-	
 	if(this->isGoalState()) {
 		return 0;
 	}
 	
 	//boat is on south shore, use firstPerson and secondPerson
 	if(boatSouth) {
-#if DEBUG
-		cerr<<"state::getPossibleNextStates: boat south"<<endl;
-#endif
 		//handle special case of one person on south shore
 		if(south.size() == 1) {
-#if DEBUG
-			cerr<<"state::getPossibleNextStates: south size = 1"<<endl;
-#endif
 			vector<int> newSouth;
 			vector<int> newNorth = north;
 			newNorth.push_back(*(south.begin()));
@@ -150,9 +140,6 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
 			stateCount = 1;
 		}
 		else {
-#if DEBUG
-		cerr<<"state::getPossibleNextStates: south size != 1"<<endl;
-#endif
 			//create a new state for each unique combination of two people on south shore
 			for(firstPerson = south.begin(); firstPerson < south.end(); firstPerson++) {
 				for(secondPerson = firstPerson+1; secondPerson < south.end(); secondPerson++) {
@@ -182,48 +169,22 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
 	}
 	//boat is on north shore, use firstPerson
 	else {
-#if DEBUG
-		cerr<<"state::getPossibleNextStates: boat north"<<endl;
-#endif
 		//create a new state for each person on north shore
 		for(firstPerson = north.begin(); firstPerson < north.end(); firstPerson++) {
 			vector<int> newSouth = south;
 			vector<int> newNorth;
-#if DEBUG
-			static int fpIndex = -1;
-			fpIndex++;
-			cerr<<"state::getPossibleNextStates: fpIndex = "<<fpIndex<<endl;
-#endif
 			//add all but firstPerson to newNorth, add firstPerson to newSouth
 			for(vector<int>::iterator tNorth = north.begin(); tNorth < north.end(); tNorth++) {
-#if DEBUG
-				cerr<<"state::getPossibleNextStates: boat north inner loop"<<endl;
-#endif
 				if(tNorth != firstPerson) {
-#if DEBUG
-					cerr<<"state::getPossibleNextStates: pushing to new north"<<endl;
-#endif
 					newNorth.push_back(*tNorth);
 				}
 				else {
-#if DEBUG
-					cerr<<"state::getPossibleNextStates: pushing to new south"<<endl;
-#endif
 					newSouth.push_back(*tNorth);
 				}
 			}
 			
-#if DEBUG
-			cerr<<"state::getPossibleNextStates: creating new state"<<endl;
-#endif
 			state *nState = new state(newSouth, newNorth, !boatSouth);
-#if DEBUG
-			cerr<<"state::getPossibleNextStates: new state created"<<endl;
-#endif
 			transCost = *firstPerson;
-#if DEBUG
-			cerr<<"state::getPossibleNextStates: pushing new state"<<endl;
-#endif
 			nextStates.push_back(nState);
 			costs.push_back(transCost);
 			stateCount++;
