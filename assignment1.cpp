@@ -7,30 +7,71 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <queue>
+#include <stack>
 #include "state.h"
 #include "node.h"
 using namespace std;
 
-void breadthFirstSearch();
-void depthFirstSearch();
-void aStarSearch();
+bool compNodesBFS(node *left, node *right);
+bool compNodesDFS(node *left, node *right);
+bool compNodesAStar(node *left, node *right);
+void breadthFirstSearch(node *root);
+void depthFirstSearch(node *root);
+void aStarSearch(node *root);
 bool parse_input(string file, state &initState);
+void printPath(stack<node*> path);
 
 int main(){
     string file = "input1.txt";   //change this variable to change input file
 	state initState;
-    parse_input(file, initState);
+	bool status;
+	
+    status = parse_input(file, initState);
+	if(status == false) {
+		return 1;
+	}
     
     node root(initState);
 }
 
+/* Function name: compNodesBFS
+ * Function purpose: Compare two nodes for placement in a priority queue for breadth first search
+ * Parameters:
+ *		node &left, node &right: the nodes to compare
+ * Return: bool: true if left should be later in the priority queue than right
+ */
+bool compNodesBFS(node *left, node *right) {
+	return (left->getDepth() > right->getDepth());
+}
+
+/* Function name: compNodesDFS
+ * Function purpose: Compare two nodes for placement in a priority queue for depth first search
+ * Parameters:
+ *		node &left, node &right: the nodes to compare
+ * Return: bool: true if left should be later in the priority queue than right
+ */
+bool compNodesDFS(node *left, node *right) {
+	return (left->getDepth() < right->getDepth());
+}
+
+/* Function name: compNodesAStar
+ * Function purpose: Compare two nodes for placement in a priority queue for A* search
+ * Parameters:
+ *		node &left, node &right: the nodes to compare
+ * Return: bool: true if left should be later in the priority queue than right
+ */
+bool compNodesAStar(node *left, node *right) {
+	return (left->getHeuristic() > right->getHeuristic());
+}
 
 /* Function name: breadthFirstSearch
  * Function purpose: function to traverse the tree using the breadth first search algorithm
  * Return:
  *  void
  */
-void breadthFirstSearch(){
+void breadthFirstSearch(node *root){
+	priority_queue<node*, vector<node*>, compNodesBFS> q;
     cout << "Breadth First Search" << endl;
 }
 
@@ -40,7 +81,8 @@ void breadthFirstSearch(){
  * Return:
  *  void
  */
-void depthFirstSearch(){
+void depthFirstSearch(node *root){
+	priority_queue<node*, vector<node*>, compNodesDFS> q;
     cout << "Depth First Search" << endl;
 }
 
@@ -50,7 +92,8 @@ void depthFirstSearch(){
  * Return:
  *  void
  */
-void aStarSearch(){
+void aStarSearch(node *root){
+	priority_queue<node*, vector<node*>, compNodesAStar> q;
     cout << "A* search" << endl;
 }
 
@@ -90,4 +133,13 @@ bool parse_input(string file, state &initState){
 	initState = state(initSouth, initNorth, true);
 	input.close();
 	return result;
+}
+
+void printPath(stack<node*> path) {
+	node *currNode = NULL;
+	while(path.size() > 0) {
+		currNode = path.top();
+		path.pop();
+		currNode->print();
+	}
 }
