@@ -65,6 +65,7 @@ node::node(node &_parent, state &_currState, int _cost){
  * Function purpose: destructor for node class
  */
 node::~node() {
+	delete currState;
 	for(vector<node*>::iterator currChild = children.begin(); currChild < children.end(); currChild++) {
 		delete *currChild;
 	}
