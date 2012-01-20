@@ -13,13 +13,14 @@
 #include "node.h"
 using namespace std;
 
+typedef enum {BFS, DFS, ASTAR} t_algorithm;
+
+template <t_algorithm algo> void genericSearch(node *root);
 void breadthFirstSearch(node *root);
 void depthFirstSearch(node *root);
 void aStarSearch(node *root);
 bool parse_input(string file, state &initState);
 void printPath(stack<node*> &path);
-
-typedef enum {BFS, DFS, ASTAR} t_algorithm;
 
 int main(){
     string file = "input1.txt";   //change this variable to change input file
@@ -34,6 +35,9 @@ int main(){
     node rootBFS(initState);
 	node rootDFS(initState);
 	node rootASt(initState);
+	genericSearch<BFS>(&rootBFS);
+	genericSearch<DFS>(&rootDFS);
+	genericSearch<ASTAR>(&rootASt);
 }
 
 
@@ -59,6 +63,59 @@ class compNodes {
 			}
 		}
 };
+
+/* Function name: genericSearch
+ * Function purpose: function to traverse the given tree using the given search algorithm
+ * Parameters:
+ *		t_algorithm algo: Search algorithm to use to traverse the tree
+ *		node *root: Root node of the tree to traverse
+ * Return:
+ *  void
+ */
+template <t_algorithm algo>
+void genericSearch(node *root) {
+	priority_queue<node*, vector<node*>, compNodes<algo> > q;
+	node *currNode = NULL;
+	vector<node*> currNodeChildren;
+	node *goalNode = NULL;
+	stack<node*> path;
+	int totalCost = 0;
+	int expandCount = 0;
+	
+    switch(algo) {
+		case BFS:
+			cout<<"Breadth First Search";
+		case DFS:
+			cout<<"Depth First Search";
+		case ASTAR:
+			cout<<"A* Search";
+		default:
+			cout<<"Unknown Search Algorithm";
+	}
+	q.push(root);
+	
+	while(q.size() > 0) {
+		//get first node
+		currNode = q.top();
+		q.pop();
+		//expand node
+		currNode->expand();
+		expandCount++;
+		//add node's children to queue
+		currNodeChildren = currNode->getChildren();
+		for(vector<node*>::iterator it = currNodeChildren.begin(); it < currNodeChildren.end(); it++) {
+			q.push(*it);
+			//check for end condition in node's children
+			if((*it)->isGoalNode()) {
+				goalNode = *it;
+				break;
+			}
+		}
+	}
+	totalCost = goalNode->tracePathToHere(path);
+	cout<<" "<<totalCost<<" "<<expandCount<<endl;
+	printPath(path);
+}
 
 /* Function name: breadthFirstSearch
  * Function purpose: function to traverse the tree using the breadth first search algorithm
