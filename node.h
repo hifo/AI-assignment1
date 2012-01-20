@@ -20,8 +20,10 @@ public:
 	void expand();
 	int getDepth();
 	int getHeuristic();
-	void tracePathToHere(stack<node*> &path);
+	int tracePathToHere(stack<node*> &path);
 	void print();
+	vector<node*> &getChildren();
+	bool isGoalNode();
 private:
     void addChild(node &child);
 	void addNextState(state &nextState, int cost);
@@ -104,12 +106,15 @@ int node::getHeuristic() {
  * Function purpose: Trace path from root of tree to this node
  * Parameters:
  *		stack<node*> &path: stack which will contain the nodes in the path
- * Returns: void
+ * Returns: int: total cost of path
  */
-void node::tracePathToHere(stack<node*> &path) {
+int node::tracePathToHere(stack<node*> &path) {
 	path.push(this);
 	if(parent != NULL) {
-		parent->tracePathToHere(path);
+		return cost + parent->tracePathToHere(path);
+	}
+	else {
+		return cost;
 	}
 }
 
@@ -119,6 +124,22 @@ void node::tracePathToHere(stack<node*> &path) {
  */
 void node::print() {
 	currState->print();
+}
+
+/* Function name: getChildren
+ * Function purpose: Get this node's children
+ * Returns: vector<node*>: vector containing this node's children
+ */
+vector<node*> &node::getChildren() {
+	return children;
+}
+
+/* Function name: isGoalNode
+ * Function purpose: Determines if this is a goal node
+ * Returns: bool: true if this is a goal node, false otherwise
+ */
+bool node::isGoalNode() {
+	return currState->isGoalState();
 }
 
 /* Function name: addChild

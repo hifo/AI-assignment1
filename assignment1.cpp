@@ -17,7 +17,9 @@ void breadthFirstSearch(node *root);
 void depthFirstSearch(node *root);
 void aStarSearch(node *root);
 bool parse_input(string file, state &initState);
-void printPath(stack<node*> path);
+void printPath(stack<node*> &path);
+
+typedef enum {BFS, DFS, ASTAR} t_algorithm;
 
 int main(){
     string file = "input1.txt";   //change this variable to change input file
@@ -29,45 +31,32 @@ int main(){
 		return 1;
 	}
     
-    node root(initState);
+    node rootBFS(initState);
+	node rootDFS(initState);
+	node rootASt(initState);
 }
 
-/* Function name: compNodesBFS
- * Function purpose: Compare two nodes for placement in a priority queue for breadth first search
- * Parameters:
- *		node &left, node &right: the nodes to compare
- * Return: bool: true if left should be later in the priority queue than right
- */
-class compNodesBFS {
-	public:
-		bool operator()(node *left, node *right) {
-			return (left->getDepth() > right->getDepth());
-		}
-};
 
-/* Function name: compNodesDFS
- * Function purpose: Compare two nodes for placement in a priority queue for depth first search
+/* Function name: compNodes
+ * Function purpose: Compare two nodes for placement in a priority queue for given algorithm
  * Parameters:
  *		node &left, node &right: the nodes to compare
  * Return: bool: true if left should be later in the priority queue than right
  */
-class compNodesDFS {
+template<t_algorithm algo>
+class compNodes {
 	public:
 		bool operator()(node *left, node *right) {
-			return (left->getDepth() < right->getDepth());
-		}
-};
-
-/* Function name: compNodesAStar
- * Function purpose: Compare two nodes for placement in a priority queue for A* search
- * Parameters:
- *		node &left, node &right: the nodes to compare
- * Return: bool: true if left should be later in the priority queue than right
- */
-class compNodesAStar {
-	public:
-		bool operator()(node *left, node *right) {
-			return (left->getHeuristic() > right->getHeuristic());
+			switch(algo) {
+				case BFS:
+					return (left->getDepth() > right->getDepth());
+				case DFS:
+					return (left->getDepth() < right->getDepth());
+				case ASTAR:
+					return (left->getHeuristic() > right->getHeuristic());
+				default:
+					return false;
+			}
 		}
 };
 
@@ -77,10 +66,38 @@ class compNodesAStar {
  *  void
  */
 void breadthFirstSearch(node *root){
-	priority_queue<node*, vector<node*>, compNodesBFS> q;
+	priority_queue<node*, vector<node*>, compNodes<BFS> > q;
+	node *currNode = NULL;
+	vector<node*> currNodeChildren;
+	node *goalNode = NULL;
+	stack<node*> path;
+	int totalCost = 0;
+	int expandCount = 0;
+	
     cout << "Breadth First Search" << endl;
-	//expand current node
-	//add current node's children to queue
+	q.push(root);
+	
+	while(q.size() > 0) {
+		//get first node
+		currNode = q.top();
+		q.pop();
+		//expand node
+		currNode->expand();
+		expandCount++;
+		//add node's children to queue
+		currNodeChildren = currNode->getChildren();
+		for(vector<node*>::iterator it = currNodeChildren.begin(); it < currNodeChildren.end(); it++) {
+			q.push(*it);
+			//check for end condition in node's children
+			if((*it)->isGoalNode()) {
+				goalNode = *it;
+				break;
+			}
+		}
+	}
+	totalCost = goalNode->tracePathToHere(path);
+	cout<<" "<<totalCost<<" "<<expandCount<<endl;
+	printPath(path);
 }
 
 
@@ -90,7 +107,7 @@ void breadthFirstSearch(node *root){
  *  void
  */
 void depthFirstSearch(node *root){
-	priority_queue<node*, vector<node*>, compNodesDFS> q;
+	priority_queue<node*, vector<node*>, compNodes<DFS> > q;
     cout << "Depth First Search" << endl;
 }
 
@@ -101,7 +118,7 @@ void depthFirstSearch(node *root){
  *  void
  */
 void aStarSearch(node *root){
-	priority_queue<node*, vector<node*>, compNodesAStar> q;
+	priority_queue<node*, vector<node*>, compNodes<ASTAR> > q;
     cout << "A* search" << endl;
 }
 
@@ -143,7 +160,7 @@ bool parse_input(string file, state &initState){
 	return result;
 }
 
-void printPath(stack<node*> path) {
+void printPath(stack<node*> &path) {
 	node *currNode = NULL;
 	while(path.size() > 0) {
 		currNode = path.top();
