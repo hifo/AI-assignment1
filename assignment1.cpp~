@@ -4,6 +4,9 @@
 //  Created by Hillary Fotino and Eric Finn on 1/18/12.
 //
 
+
+#define DEBUG 0
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -13,27 +16,43 @@
 #include "node.h"
 using namespace std;
 
+typedef enum {BFS, DFS, ASTAR} t_algorithm;
+
+template <t_algorithm algo> void genericSearch(node *root);
 void breadthFirstSearch(node *root);
 void depthFirstSearch(node *root);
 void aStarSearch(node *root);
 bool parse_input(string file, state &initState);
 void printPath(stack<node*> &path);
 
-typedef enum {BFS, DFS, ASTAR} t_algorithm;
-
 int main(){
-    string file = "input1.txt";   //change this variable to change input file
+    string file = "input3.txt";   //change this variable to change input file
 	state initState;
 	bool status;
-	
+#if DEBUG
+	cerr<<"main"<<endl;
+#endif
     status = parse_input(file, initState);
 	if(status == false) {
 		return 1;
 	}
     
+#if DEBUG
+	cerr<<"main: input file successfully parsed"<<endl;
+#endif
     node rootBFS(initState);
 	node rootDFS(initState);
 	node rootASt(initState);
+#if DEBUG
+	cerr<<"main: root nodes created"<<endl;
+#endif
+	genericSearch<BFS>(&rootBFS);
+	genericSearch<DFS>(&rootDFS);
+	genericSearch<ASTAR>(&rootASt);
+#if DEBUG
+	cerr<<"End of main"<<endl;
+#endif
+	return 0;
 }
 
 
@@ -47,6 +66,9 @@ template<t_algorithm algo>
 class compNodes {
 	public:
 		bool operator()(node *left, node *right) {
+			if(left == NULL || right == NULL) {
+				return false;
+			}
 			switch(algo) {
 				case BFS:
 					return (left->getDepth() > right->getDepth());
@@ -59,6 +81,90 @@ class compNodes {
 			}
 		}
 };
+
+/* Function name: genericSearch
+ * Function purpose: function to traverse the given tree using the given search algorithm
+ * Parameters:
+ *		t_algorithm algo: Search algorithm to use to traverse the tree
+ *		node *root: Root node of the tree to traverse
+ * Return:
+ *  void
+ */
+template <t_algorithm algo>
+void genericSearch(node *root) {
+	priority_queue<node*, vector<node*>, compNodes<algo> > q;
+	node *currNode = NULL;
+	vector<node*> currNodeChildren;
+	node *goalNode = NULL;
+	stack<node*> path;
+	int totalCost = 0;
+	int expandCount = 0;
+	
+#if DEBUG
+	cerr<<"genericSearch"<<endl;
+#endif
+	
+	if(root == NULL) {
+		return;
+	}
+	
+    switch(algo) {
+		case BFS:
+			cout<<"Breadth First Search";
+			break;
+		case DFS:
+			cout<<"Depth First Search";
+			break;
+		case ASTAR:
+			cout<<"A* Search";
+			break;
+		default:
+			cout<<"Unknown Search Algorithm";
+			break;
+	}
+	
+#if DEBUG
+	cerr<<endl<<"genericSearch: pushing root"<<endl;
+#endif
+	q.push(root);
+
+#if DEBUG
+	cerr<<"genericSearch: entering loop"<<endl;
+#endif
+	while(q.size() > 0) {
+#if DEBUG
+		cerr<<"genericSearch: popping"<<endl;
+#endif
+		//get first node
+		currNode = q.top();
+		q.pop();
+#if DEBUG
+		cerr<<"genericSearch: expanding"<<endl;
+#endif
+		//expand node
+		currNode->expand();
+		expandCount++;
+#if DEBUG
+		cerr<<"genericSearch: adding children to queue"<<endl;
+#endif
+		//add node's children to queue
+		currNodeChildren = currNode->getChildren();
+		for(vector<node*>::iterator it = currNodeChildren.begin(); it < currNodeChildren.end(); it++) {
+			q.push(*it);
+			//check for end condition in node's children
+			if((*it)->isGoalNode()) {
+				goalNode = *it;
+				break;
+			}
+		}
+	}
+#if DEBUG
+	cerr<<"genericSearch: loop finished"<<endl;
+#endif
+	totalCost = goalNode->tracePathToHere(path);
+	cout<<" "<<totalCost<<" "<<expandCount<<endl;
+	printPath(path);
+}
 
 /* Function name: breadthFirstSearch
  * Function purpose: function to traverse the tree using the breadth first search algorithm
@@ -108,7 +214,29 @@ void breadthFirstSearch(node *root){
  */
 void depthFirstSearch(node *root){
 	priority_queue<node*, vector<node*>, compNodes<DFS> > q;
-    cout << "Depth First Search" << endl;
+	node *currNode = NULL;
+	vector<node*> currNodeChildren;
+	node *goalNode = NULL;
+	stack<node*> path;
+	int totalCost = 0;
+	int expandCost = 0;
+	cout << "Depth First Search" << endl;
+
+	q.push(root);
+
+	while(q.size() > 0){
+	  //get first node
+	  currNode = q.top();
+	  q.pop();
+	  //expand node
+	  currNode->expand();
+	  expandCount++;
+	  //add node's children to queue
+	  currNodeChildren = currNode->getChildren();
+	  for(vector<node*>::iterator it = currNodeChildren.begin(); it< currNodeChildren.end(); it++){
+	    
+	  }
+	}
 }
 
 
