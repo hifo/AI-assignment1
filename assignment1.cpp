@@ -82,7 +82,7 @@ class compNodes {
 				case DFS:
 					return (left->getDepth() < right->getDepth());
 				case ASTAR:
-					return ((left->getHeuristic() + left->getCost()) <
+					return ((left->getHeuristic() + left->getCost()) >
 							(right->getHeuristic() + right->getCost()));
 				default:
 					return false;
