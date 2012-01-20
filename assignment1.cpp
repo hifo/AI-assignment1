@@ -30,6 +30,10 @@ int main(){
 	if(status == false) {
 		return 1;
 	}
+    int num_people;
+    int[num_people] people;
+    String input_file = "input1.txt";   //change this variable to change input file
+    parse_input(input_file);
     
     node rootBFS(initState);
 	node rootDFS(initState);
@@ -130,6 +134,7 @@ void aStarSearch(node *root){
  * Return:
  *  bool: true on success, false on failure
  */
+
 bool parse_input(string file, state &initState){
     ifstream input;
 	int curElement;
