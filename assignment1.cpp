@@ -20,7 +20,6 @@ bool parse_input(string file, state &initState);
 void printPath(stack<node*> path);
 
 int main(){
-<<<<<<< HEAD
     string file = "input1.txt";   //change this variable to change input file
 	state initState;
 	bool status;
@@ -29,12 +28,10 @@ int main(){
 	if(status == false) {
 		return 1;
 	}
-=======
     int num_people;
     int[num_people] people;
     String input_file = "input1.txt";   //change this variable to change input file
     parse_input(input_file);
->>>>>>> Working on parsing function
     
     node root(initState);
 }
@@ -120,7 +117,7 @@ void aStarSearch(node *root){
  * Return:
  *  bool: true on success, false on failure
  */
-<<<<<<< HEAD
+
 bool parse_input(string file, state &initState){
     ifstream input;
 	int curElement;
@@ -158,28 +155,4 @@ void printPath(stack<node*> path) {
 		path.pop();
 		currNode->print();
 	}
-=======
-void parse_input(String input_file){
-    /*
-     *  textfile format
-     *      num_people
-     *          people[0] people[1]...people[n]
-     */
-    
-    int num_people;
-    int[num_people] people;
-    string line;
-    
-    ifstream file (input_file);
-    if(file.is_open()){
-        getline(file, line);
-        num_people = atoi(line);
-        cout << line << endl; //debug line
-        getline(file, line);
-        cout << line << endl;
-    }
-    else{
-        cout << "Unable to open file" << endl;
-    }
->>>>>>> Working on parsing function
 }
