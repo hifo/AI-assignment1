@@ -5,7 +5,7 @@
 //
 
 
-#define DEBUG 1
+#define DEBUG 0
 
 #include <iostream>
 #include <fstream>
@@ -26,18 +26,26 @@ bool parse_input(string file, state &initState);
 void printPath(stack<node*> &path);
 
 int main(){
-    string file = "input1.txt";   //change this variable to change input file
+    string file = "input3.txt";   //change this variable to change input file
 	state initState;
 	bool status;
-	
+#if DEBUG
+	cerr<<"main"<<endl;
+#endif
     status = parse_input(file, initState);
 	if(status == false) {
 		return 1;
 	}
     
+#if DEBUG
+	cerr<<"main: input file successfully parsed"<<endl;
+#endif
     node rootBFS(initState);
 	node rootDFS(initState);
 	node rootASt(initState);
+#if DEBUG
+	cerr<<"main: root nodes created"<<endl;
+#endif
 	genericSearch<BFS>(&rootBFS);
 	genericSearch<DFS>(&rootDFS);
 	genericSearch<ASTAR>(&rootASt);
@@ -92,6 +100,10 @@ void genericSearch(node *root) {
 	int totalCost = 0;
 	int expandCount = 0;
 	
+#if DEBUG
+	cerr<<"genericSearch"<<endl;
+#endif
+	
 	if(root == NULL) {
 		return;
 	}
@@ -111,15 +123,30 @@ void genericSearch(node *root) {
 			break;
 	}
 	
+#if DEBUG
+	cerr<<endl<<"genericSearch: pushing root"<<endl;
+#endif
 	q.push(root);
 
+#if DEBUG
+	cerr<<"genericSearch: entering loop"<<endl;
+#endif
 	while(q.size() > 0) {
+#if DEBUG
+		cerr<<"genericSearch: popping"<<endl;
+#endif
 		//get first node
 		currNode = q.top();
 		q.pop();
+#if DEBUG
+		cerr<<"genericSearch: expanding"<<endl;
+#endif
 		//expand node
 		currNode->expand();
 		expandCount++;
+#if DEBUG
+		cerr<<"genericSearch: adding children to queue"<<endl;
+#endif
 		//add node's children to queue
 		currNodeChildren = currNode->getChildren();
 		for(vector<node*>::iterator it = currNodeChildren.begin(); it < currNodeChildren.end(); it++) {
@@ -131,6 +158,9 @@ void genericSearch(node *root) {
 			}
 		}
 	}
+#if DEBUG
+	cerr<<"genericSearch: loop finished"<<endl;
+#endif
 	totalCost = goalNode->tracePathToHere(path);
 	cout<<" "<<totalCost<<" "<<expandCount<<endl;
 	printPath(path);

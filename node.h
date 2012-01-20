@@ -79,11 +79,23 @@ void node::expand() {
 	vector<state*> nextStates;
 	vector<int> costs;
 	int stateCount = 0;
+#if DEBUG
+	cerr<<"node::expand"<<endl;
+#endif
 	stateCount = currState->getPossibleNextStates(nextStates, costs);
+#if DEBUG
+	cerr<<"node::expand: got next states"<<endl;
+#endif
 	//iterate through nextStates, adding a node and its corresponding cost for each state
 	for(int index = 0; index < stateCount; index++) {
+#if DEBUG
+		cerr<<"node::expand: next state index: "<<index<<endl;
+#endif
 		addNextState(*nextStates[index], costs[index]);
 	}
+#if DEBUG
+	cerr<<"node::expand: added states as children"<<endl;
+#endif
 }
 
 /* Function name: getDepth
