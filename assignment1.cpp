@@ -100,6 +100,7 @@ void genericSearch(node *root) {
 	stack<node*> path;
 	int totalCost = 0;
 	int expandCount = 0;
+	bool goalFound = false;
 	
 #if DEBUG
 	cerr<<"genericSearch"<<endl;
@@ -132,7 +133,7 @@ void genericSearch(node *root) {
 #if DEBUG
 	cerr<<"genericSearch: entering loop"<<endl;
 #endif
-	while(q.size() > 0) {
+	while((q.size() > 0) && !goalFound) {
 #if DEBUG
 		cerr<<"genericSearch: popping"<<endl;
 #endif
@@ -155,6 +156,7 @@ void genericSearch(node *root) {
 			//check for end condition in node's children
 			if((*it)->isGoalNode()) {
 				goalNode = *it;
+				goalFound = true;
 				break;
 			}
 		}
