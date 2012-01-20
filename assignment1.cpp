@@ -30,10 +30,6 @@ int main(){
 	if(status == false) {
 		return 1;
 	}
-    int num_people;
-    int[num_people] people;
-    String input_file = "input1.txt";   //change this variable to change input file
-    parse_input(input_file);
     
     node rootBFS(initState);
 	node rootDFS(initState);
