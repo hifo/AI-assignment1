@@ -26,7 +26,7 @@ bool parse_input(string file, state &initState);
 void printPath(stack<node*> &path);
 
 int main(){
-    string file = "input3.txt";   //change this variable to change input file
+    string file = "input2.txt";   //change this variable to change input file
 	state initState;
 	bool status;
 #if DEBUG
