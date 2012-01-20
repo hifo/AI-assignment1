@@ -41,8 +41,6 @@ state::state(vector<int> &_south, vector<int> &_north, bool _boatSouth) {
 	south = _south;
 	north = _north;
 	boatSouth = _boatSouth;
-	sort(south.begin(), south.end());
-	sort(north.begin(), north.end());
 }
 
 /* Function name: state

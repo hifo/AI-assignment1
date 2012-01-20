@@ -19,6 +19,7 @@ public:
     ~node();
 	void expand();
 	int getDepth();
+	int getCost();
 	int getHeuristic();
 	int tracePathToHere(stack<node*> &path);
 	void print();
@@ -103,6 +104,14 @@ void node::expand() {
  */
 int node::getDepth() {
 	return depth;
+}
+
+/* Function name: getCost
+ * Function purpose: Get the cost of this node
+ * Returns: int: the cost of this node
+ */
+int node::getCost() {
+	return cost;
 }
 
 /* Function name: getHeuristic
