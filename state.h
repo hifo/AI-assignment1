@@ -199,9 +199,13 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
  * Returns: void
  */
 void state::print() {
-	cout<<"State:\n"
-			<<"\tBoat: "<<boatSouth? "South" : "North"<<" shore\n";
-	cout<<"\tSouth: ";
+	cout<<"State:\n\tBoat: ";
+	if(boatSouth)
+		cout<<"South";
+	else
+		cout<<"North";
+	cout<<" shore\n"
+		<<"\tSouth: ";
 	printVector(south);
 	cout<<"\n\tNorth: ";
 	printVector(north);
@@ -222,7 +226,10 @@ int getMinVal(vector<int> &listOfVals) {
 
 //print a vector of ints
 void printVector(vector<int> toPrint) {
-	for(int idx = 0; idx < toPrint.size()-1; idx++) {
+	if(toPrint.size() == 0) {
+		return;
+	}
+	for(unsigned int idx = 0; idx < toPrint.size()-1; idx++) {
 		cout<<toPrint[idx]<<", ";
 	}
 	cout<<toPrint[toPrint.size()-1];

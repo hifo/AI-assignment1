@@ -13,9 +13,6 @@
 #include "node.h"
 using namespace std;
 
-bool compNodesBFS(node *left, node *right);
-bool compNodesDFS(node *left, node *right);
-bool compNodesAStar(node *left, node *right);
 void breadthFirstSearch(node *root);
 void depthFirstSearch(node *root);
 void aStarSearch(node *root);
@@ -41,9 +38,12 @@ int main(){
  *		node &left, node &right: the nodes to compare
  * Return: bool: true if left should be later in the priority queue than right
  */
-bool compNodesBFS(node *left, node *right) {
-	return (left->getDepth() > right->getDepth());
-}
+class compNodesBFS {
+	public:
+		bool operator()(node *left, node *right) {
+			return (left->getDepth() > right->getDepth());
+		}
+};
 
 /* Function name: compNodesDFS
  * Function purpose: Compare two nodes for placement in a priority queue for depth first search
@@ -51,9 +51,12 @@ bool compNodesBFS(node *left, node *right) {
  *		node &left, node &right: the nodes to compare
  * Return: bool: true if left should be later in the priority queue than right
  */
-bool compNodesDFS(node *left, node *right) {
-	return (left->getDepth() < right->getDepth());
-}
+class compNodesDFS {
+	public:
+		bool operator()(node *left, node *right) {
+			return (left->getDepth() < right->getDepth());
+		}
+};
 
 /* Function name: compNodesAStar
  * Function purpose: Compare two nodes for placement in a priority queue for A* search
@@ -61,9 +64,12 @@ bool compNodesDFS(node *left, node *right) {
  *		node &left, node &right: the nodes to compare
  * Return: bool: true if left should be later in the priority queue than right
  */
-bool compNodesAStar(node *left, node *right) {
-	return (left->getHeuristic() > right->getHeuristic());
-}
+class compNodesAStar {
+	public:
+		bool operator()(node *left, node *right) {
+			return (left->getHeuristic() > right->getHeuristic());
+		}
+};
 
 /* Function name: breadthFirstSearch
  * Function purpose: function to traverse the tree using the breadth first search algorithm
@@ -73,6 +79,8 @@ bool compNodesAStar(node *left, node *right) {
 void breadthFirstSearch(node *root){
 	priority_queue<node*, vector<node*>, compNodesBFS> q;
     cout << "Breadth First Search" << endl;
+	//expand current node
+	//add current node's children to queue
 }
 
 

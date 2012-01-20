@@ -107,7 +107,7 @@ int node::getHeuristic() {
  * Returns: void
  */
 void node::tracePathToHere(stack<node*> &path) {
-	path.push_back(this);
+	path.push(this);
 	if(parent != NULL) {
 		parent->tracePathToHere(path);
 	}
