@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <stack>
 #include "state.h"
 //
 //  node.h
@@ -18,6 +19,9 @@ public:
     ~node();
 	void expand();
 	int getDepth();
+	int getHeuristic();
+	void tracePathToHere(stack<node*> &path);
+	void print();
 private:
     void addChild(node &child);
 	void addNextState(state &nextState, int cost);
@@ -59,6 +63,7 @@ node::node(node &_parent, state &_currState, int _cost){
  * Function purpose: destructor for node class
  */
 node::~node() {
+	delete currState;
 	for(vector<node*>::iterator currChild = children.begin(); currChild < children.end(); currChild++) {
 		delete *currChild;
 	}
@@ -78,12 +83,42 @@ void node::expand() {
 		addNextState(*nextStates[index], costs[index]);
 	}
 }
+
 /* Function name: getDepth
  * Function purpose: Get the depth in the tree of this node
  * Returns: int: the depth of this node
  */
 int node::getDepth() {
 	return depth;
+}
+
+/* Function name: getHeuristic
+ * Function purpose: Get the heuristic for this node's state
+ * Returns: int: the value of the heuristic
+ */
+int node::getHeuristic() {
+	return currState->heuristic();
+}
+
+/* Function name: tracePathToHere
+ * Function purpose: Trace path from root of tree to this node
+ * Parameters:
+ *		stack<node*> &path: stack which will contain the nodes in the path
+ * Returns: void
+ */
+void node::tracePathToHere(stack<node*> &path) {
+	path.push_back(this);
+	if(parent != NULL) {
+		parent->tracePathToHere(path);
+	}
+}
+
+/* Function name: print
+ * Function purpose: Print this node's state
+ * Returns: void
+ */
+void node::print() {
+	currState->print();
 }
 
 /* Function name: addChild

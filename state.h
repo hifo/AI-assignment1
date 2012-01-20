@@ -1,15 +1,12 @@
+//state.h
+//Created by Eric Finn and Hillary Fotino on 2012-01-18
 #pragma once
 
 #include <vector>
 #include <algorithm>
 using namespace std;
 
-
-//state.h
-//Created by Eric Finn and Hillary Fotino on 2012-01-18
 //State class to record state of system
-
-int getMinVal(vector<int> &listOfVals);
 
 class state {
 	public:
@@ -22,11 +19,16 @@ class state {
 		const vector<int> &getNorthSide(void);
 		bool isBoatSouth(void);
 		int getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs);
+		void print();
 	private:
 		vector<int> south;
 		vector<int> north;
 		bool boatSouth;
 };
+
+//helper function prototypes
+int getMinVal(vector<int> &listOfVals);
+void printVector(vector<int> toPrint);
 
 /* Function name: state
  * Function purpose: constructor for state class
@@ -192,6 +194,20 @@ int state::getPossibleNextStates(vector<state*> &nextStates, vector<int> &costs)
 	return stateCount;
 }
 
+/* Function name: print
+ * Function purpose: Print this state to stdout
+ * Returns: void
+ */
+void state::print() {
+	cout<<"State:\n"
+			<<"\tBoat: "<<boatSouth? "South" : "North"<<" shore\n";
+	cout<<"\tSouth: ";
+	printVector(south);
+	cout<<"\n\tNorth: ";
+	printVector(north);
+	cout<<endl<<endl;
+}
+
 //Get minimum value in a vector
 int getMinVal(vector<int> &listOfVals) {
 	vector<int>::iterator currEl;
@@ -202,4 +218,12 @@ int getMinVal(vector<int> &listOfVals) {
 		}
 	}
 	return min;
+}
+
+//print a vector of ints
+void printVector(vector<int> toPrint) {
+	for(int idx = 0; idx < toPrint.size()-1; idx++) {
+		cout<<toPrint[idx]<<", ";
+	}
+	cout<<toPrint[toPrint.size()-1];
 }
