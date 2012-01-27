@@ -5,13 +5,8 @@ assignment1:
 	make clean
 	$(CCPP) -o assignment1 assignment1.cpp $(LIB)
 
-assignment2:
-	make clean
-	$(CCPP) -o assignment2 assignment2.cpp $(LIB)
-
 all:
-	assignment1, assignment2
+	assignment1
 	
 clean:
 	rm -f assignment1
-	rm -f assignment2

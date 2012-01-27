@@ -9,7 +9,6 @@ Assumptions/Design decisions:
 		Moving 2 people and the boat from southern shore to northern shore
 		Moving 1 person and the boat from the northern shore to southern shore.
 		If there is only 1 person on the southern shore, moving 1 person and the boat to the northern shore from the southern shore is valid.
-	The search algorithms are all implemented the same, except in the way the priority queues are ordered. Templates are used to switch between algorithms.
 
 Pencil & Paper Questions:
 1)	Provide a problem definition for the above problem. Be sure to include the format of the states, the initial state, possible actions, a transition model, the goal state, and the cost function.
